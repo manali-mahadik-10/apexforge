@@ -511,6 +511,7 @@ function buildScene(container) {
       activity = 5;
       switch (f.event) {
         case 'AttackLaunched':
+          if (f.args && f.args.attack === 'normal') break;
           setM('attack');
           thiefTarget = id; beamT = 1.8; beamVault = id; thiefGlow = 1;
           setTag(s, 'Under attack', 'is-warn', 3);

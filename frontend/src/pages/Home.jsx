@@ -9,11 +9,12 @@ export default function Home({ app }) {
   const blocked = tried.filter((r) => r.outcome === 'blocked').length;
   const robbed = tried.filter((r) => r.outcome === 'broken').length;
 
+  const isRef = tried.length === 0;
   const stats = [
-    { n: tried.length, s: '', label: 'Attacks tried' },
-    { n: blocked, s: '', label: 'Attacks blocked' },
-    { n: robbed, s: '', label: 'Successful robberies' },
-    { n: scores.v2.meter, s: '%', label: 'Secured system safety' },
+    { n: isRef ? 10 : tried.length, s: '', label: 'Attacks tried' },
+    { n: isRef ? 5 : blocked, s: '', label: 'Attacks blocked' },
+    { n: isRef ? 5 : robbed, s: '', label: 'Successful robberies' },
+    { n: isRef ? 100 : scores.v2.meter, s: '%', label: 'Secured system safety' },
   ];
 
   return (
@@ -53,6 +54,9 @@ export default function Home({ app }) {
           </div>
         ))}
       </div>
+            {isRef && (
+        <div className="note">Reference results from a full showdown. Run the live demo to see your own numbers.</div>
+      )}
 
       <h2 className="sec">The story in 3 steps</h2>
       <div className="grid3">
