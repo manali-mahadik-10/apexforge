@@ -1,21 +1,23 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Icon } from '../Icons.jsx';
 import { FLOW, GLOSSARY, STORY } from '../content.js';
 import { CountUp, HeroOrbit, TiltCard } from '../Hero3D.jsx';
 
-export default function Home({ app }) {
-  const { scores, runs, go } = app;
-  const tried = runs.filter((r) => r.attack !== 'normal');
-  const blocked = tried.filter((r) => r.outcome === 'blocked').length;
-  const robbed = tried.filter((r) => r.outcome === 'broken').length;
+// Fixed results of a full showdown (5 tricks on each system). Never changes.
+const STATS = [
+  { n: 10, s: '', label: 'Attacks tried' },
+  { n: 5, s: '', label: 'Attacks blocked' },
+  { n: 5, s: '', label: 'Successful robberies' },
+  { n: 100, s: '%', label: 'Secured system safety' },
+];
 
-  const isRef = tried.length === 0;
-  const stats = [
-    { n: isRef ? 10 : tried.length, s: '', label: 'Attacks tried' },
-    { n: isRef ? 5 : blocked, s: '', label: 'Attacks blocked' },
-    { n: isRef ? 5 : robbed, s: '', label: 'Successful robberies' },
-    { n: isRef ? 100 : scores.v2.meter, s: '%', label: 'Secured system safety' },
-  ];
+// Becomes true after the first time the count-up has played in this visit
+let statsPlayed = false;
+
+export default function Home({ app }) {
+  const { go } = app;
+  const animate = useRef(!statsPlayed);
+  useEffect(() => { statsPlayed = true; }, []);
 
   return (
     <div className="page">
@@ -47,16 +49,16 @@ export default function Home({ app }) {
       </section>
 
       <div className="stats">
-        {stats.map((s) => (
+        {STATS.map((s) => (
           <div className="stat" key={s.label}>
-            <div className="stat-n"><CountUp value={s.n} suffix={s.s} /></div>
+            <div className="stat-n">
+              {animate.current ? <CountUp value={s.n} suffix={s.s} /> : s.n + s.s}
+            </div>
             <div className="stat-l">{s.label}</div>
           </div>
         ))}
       </div>
-      {isRef && (
-        <div className="note">Reference results from a full showdown. Run the live demo to see your own numbers.</div>
-      )}
+      <div className="note">Results of a full showdown: all 5 tricks against both systems.</div>
 
       <h2 className="sec">The story in 3 steps</h2>
       <div className="grid3">
