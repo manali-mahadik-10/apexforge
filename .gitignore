@@ -1,0 +1,13 @@
+@"
+node_modules/
+.env
+*.db
+.env.*
+src_old/
+cache/
+artifacts/
+coverage/
+__pycache__/
+venv/
+dist/
+"@ | Out-File -Encoding ascii .gitignore
