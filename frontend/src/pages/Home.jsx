@@ -54,7 +54,7 @@ export default function Home({ app }) {
           </div>
         ))}
       </div>
-            {isRef && (
+      {isRef && (
         <div className="note">Reference results from a full showdown. Run the live demo to see your own numbers.</div>
       )}
 
